@@ -1,0 +1,249 @@
+﻿@model MovigenCore.Models.ViewModel.PedidosViewModel
+
+@{
+    ViewData["Title"] = "Editar Pedido";
+}
+<br />
+<h3 class="text-info">Editar Pedido</h3>
+<hr />
+<div class="container">
+    <form asp-action="Edit">
+        <input hidden asp-for="Pedidos.EmpresaId" />
+        <input hidden asp-for="Pedidos.Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group">
+                    <label asp-for="Pedidos.RutCliente" class="control-label"></label>
+                    <input asp-for="Pedidos.RutCliente" class="form-control" readonly />
+                    <span asp-validation-for="Pedidos.RutCliente" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Pedidos.RazonSocial" class="control-label"></label>
+                    <input asp-for="Pedidos.RazonSocial" class="form-control" />
+                    <span asp-validation-for="Pedidos.RazonSocial" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Pedidos.Sucursal" class="control-label"></label>
+                    <input asp-for="Pedidos.Sucursal" class="form-control" />
+                    <span asp-validation-for="Pedidos.Sucursal" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="col-8">
+                <div class="form-group">
+                    <label asp-for="Pedidos.CondicionPago" class="control-label"></label>
+                    <select asp-for="Pedidos.CondicionPago" class="form-control">
+                        <option value="Seleccionar" selected>Seleccionar</option>
+                        <option value="01">Contado</option>
+                        <option value="02">Crédito</option>
+                        <option value="03">Entrega Gratuita</option>
+                    </select>
+                    <span asp-validation-for="Pedidos.CondicionPago" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Pedidos.ComentarioAdicional" class="control-label"></label>
+                    <input asp-for="Pedidos.ComentarioAdicional" class="form-control" />
+                    <span asp-validation-for="Pedidos.ComentarioAdicional" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="form-group">
+                    <label asp-for="Pedidos.TipoDocumento" class="control-label"></label>
+                    <select asp-for=Pedidos.TipoDocumento class="form-control">
+                        <option selected>Seleccionar</option>
+                        <option value="B">Boleta</option>
+                        <option value="F">Factura</option>
+                    </select>
+                    <span asp-validation-for="Pedidos.TipoDocumento" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalle pedido-->
+        <div class="panel panel-default">
+            <h5>
+                Detalle
+                <button type="button" data-toggle="modal" data-target="#modalProductos" class="btn btn-outline-primary btn-sm"><i class="fas fa-search"></i></button>
+            </h5>
+
+        </div>
+        <div class="table-responsive">
+            <table class="table" id="tablaDetalle">
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Desc. %</th>
+                    <th>Total</th>
+                    <th><button type="button" id="btnEliminaLineaDet" class="btn btn-outline-danger" onclick="eliminarLineaDet(this);">-</button></th>
+                </tr>
+                @for (int i = 0; i < Model.Detalles.Count; i++)
+                {
+                    <tr>
+                        <td><input asp-for="Detalles[i].Codigo" class="form-control" /> </td>
+                        <td><input asp-for="Detalles[i].Descripcion" class="form-control" /></td>
+                        <td><input asp-for="Detalles[i].Cantidad" class="form-control" /></td>
+                        <td><input asp-for="Detalles[i].Precio" class="form-control" readonly /></td>
+                        <td><input asp-for="Detalles[0].Stock" class="form-control" readonly /></td>
+                        <td><input asp-for="Detalles[i].Descuento" class="form-control" /></td>
+                        <td><input asp-for="Detalles[i].Total" class="form-control" readonly /></td>
+                        <td></td>
+                    </tr>
+                }
+
+            </table>
+            <div class="text-center">
+                <button type="button" id="btnAgregaLineaDet" class="btn btn-outline-info" onclick="agregarLineaDet()">Agregar línea Detalle</button>
+            </div>
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="col"></div>
+            <div class="card text-center">
+                <div class="card border-info mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Total</div>
+                    <div class="card-body">
+                        <p class="card-text"><input asp-for="Pedidos.Total" class="form-control" readonly /></p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col"></div>
+        </div>
+
+
+        <div class="text-center">
+            <input type="submit" value="Editar" class="btn btn-outline-warning" />
+            <a asp-action="Index" class="btn btn-outline-info btn-sm" onclick="return confirm('¿Desea Volver a la Lista de Pedidos?')">Volver a la Lista de Pedidos</a>
+        </div>
+    </form>
+</div>
+
+<!-- Modal BUSQUEDA DE productos-->
+<div class="modal fade" id="modalProductos" tabindex="-1" role="dialog" aria-labelledby="modalProductos" aria-hidden="true">
+    <div class="modal-dialog modal-wide">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-info" id="modalProductos">Buscar Productos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table-borderless table" id="tablaProductos">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Descuento</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Cerrar</button>
+                <input type="button" onclick="recursividadEnDetalle();" value="Seleccionar" class="btn btn-outline-info" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN Modal  productos-->
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script src="~/js/Orders.js" asp-append-version="true"></script>
+    <script>
+        if (@Model.Detalles.Count== 0) {
+            @Model.Detalles.Count ==1;
+        }
+        var counter = @Model.Detalles.Count;
+        var sum = 0;
+
+         function recursividadEnDetalle() {
+
+            //Porque -2? porque hay un tr en la parte de thead y porque quiero obtener el valor actual del arreglo
+            var actualRow = $('#tablaDetalle tr').length - 2;
+
+            if ($.trim($('input[name="Detalles[' + actualRow + '].Descripcion"]').val()) === '') {
+
+                var codigo = $("#tablaProductos .selected td:first").text();
+                var descripcion = $("#tablaProductos .selected td:eq(1)").text();
+                var precio = $("#tablaProductos .selected td:eq(2)").text();
+                var stock = $("#tablaProductos .selected td:eq(3)").text();
+                var dscto = $("#tablaProductos .selected td:eq(4)").text();
+
+                //poblar inputs
+                $('input[name="Detalles[' + actualRow + '].Codigo"]').val(codigo);
+                $('input[name="Detalles[' + actualRow + '].Descripcion"]').val(descripcion);
+                $('input[name="Detalles[' + actualRow + '].Precio"]').val(precio);
+                $('input[name="Detalles[' + actualRow + '].Stock"]').val(stock);
+                $('input[name="Detalles[' + actualRow + '].Descuento"]').val(dscto);
+
+                $('#modalProductos').modal('hide');
+
+                swal("Exito", "Producto agregado", "success");
+                Calcular();
+            }
+            else {
+                agregarLineaDet();
+                recursividadEnDetalle();
+            }
+
+
+        }
+
+        //AGREGAR LINEA DE DETALLE
+        function agregarLineaDet() {
+
+            var actualRowLine = $('#tablaDetalle tr').length - 2;
+            //validador de campo descripcion. Si viene vacio, se envia mensaje de error.
+            if (!$.trim($('input[name="Detalles[' + actualRowLine + '].Descripcion"]').val()) == '') {
+
+                var tabla = document.getElementById("tablaDetalle");
+                var i = document.getElementsByName("Detalles[" + (counter - 1) + "].Descripcion").length + counter;
+                var row1 = tabla.insertRow(i);
+                var cell1 = row1.insertCell(0);
+                var cell2 = row1.insertCell(1);
+                var cell3 = row1.insertCell(2);
+                var cell4 = row1.insertCell(3);
+                var cell5 = row1.insertCell(4);
+                var cell6 = row1.insertCell(5);
+                var cell7 = row1.insertCell(6);
+
+
+                cell1.innerHTML = "<input asp-for='Detalles[" + counter + "].Codigo' class='form-control' name='Detalles[" + counter + "].Codigo' id='Detalles[" + counter + "].Codigo' onblur='GetProductosAjaxPorCodigo(this.value)'/> ";
+                cell2.innerHTML = "<input asp-for='Detalles[" + counter + "].Descripcion' class='form-control' name='Detalles[" + counter + "].Descripcion' id='Detalles[" + counter + "].Descripcion'/> ";
+                cell3.innerHTML = "<input asp-for='Detalles[" + counter + "].Cantidad' type='number' class='form-control' name='Detalles[" + counter + "].Cantidad' onblur='validacionStock();' id='Detalles[" + counter + "].Cantidad' autofocus value='1' oninput='this.value = Math.abs(this.value)' /> ";
+                cell4.innerHTML = "<input asp-for='Detalles[" + counter + "].Precio' step='0.01' class='form-control' name='Detalles[" + counter + "].Precio' id='Detalles[" + counter + "].Precio' readonly/> ";
+                cell5.innerHTML = "<input asp-for='Detalles[" + counter + "].Stock' class='form-control' name='Detalles[" + counter + "].Stock' id='Detalles[" + counter + "].Stock' readonly />";
+                cell6.innerHTML = "<input asp-for='Detalles[" + counter + "].Descuento' step='0.01' class='form-control' name='Detalles[" + counter + "].Descuento' value='0' onblur='Calcular()' id='Detalles[" + counter + "].Descuento'/> ";
+                cell7.innerHTML = "<input asp-for='Detalles[" + counter + "].Total' class='form-control' name='Detalles[" + counter + "].Total' value='0' readonly step='0.01' id='Detalles[" + counter + "].Total'/> ";
+
+                counter++;
+
+            }
+            else
+                swal("Información", "Completar campo Descripción para agregar mas detalles.", "info");
+
+        }
+    </script>
+    
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <script>
+             swal("Información", '@ViewBag.Message', "error");
+        </script>
+
+    }
+}
+

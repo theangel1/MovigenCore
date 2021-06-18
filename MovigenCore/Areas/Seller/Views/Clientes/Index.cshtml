@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MovigenCore.Models.Cliemae>
+
+    @{
+    ViewData["Title"] = "Clientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    <br />
+    <div class="container">
+        <h3 class="text-info">Clientes</h3>
+        <p>
+            <a asp-action="Create" class="btn btn-outline-info">Ingresar nuevo Cliente</a><br>
+        </p>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-hover dt-responsive table-borderless" id="tablaTick">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Clrut)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Clnom)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cldir)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Clobs)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    @section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+  $(document).ready(function () {
+           $("#tablaTick").DataTable({
+                pageLength: 5,
+                destroy: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
+                ajax: {
+                    url: "/Seller/Clientes/GetClientes",
+                    type: "GET",
+                    datatype: "json",
+                },
+                "columns": [
+                    { "data": "clrut" },
+                    { "data": "clnom" },
+                    { "data": "cldir" },
+                    { "data": "clobs" },
+
+                    {
+                        "mRender": function (data, type, row) {
+
+                            var linkDetail = '@Html.ActionLink("Detalles", "Details", new {id= -1 },new { @class = "btn btn-sm btn-outline-success"})';
+                            linkDetail = linkDetail.replace("-1", row.id);
+
+                            var linkDel = '@Html.ActionLink("Eliminar", "Delete", new {id= -1 }, new { @class = "btn btn-sm btn-outline-danger" })';
+                            linkDel = linkDel.replace("-1", row.id);
+
+                            return linkDetail + ' ' + linkDel;
+                        }
+                    }
+                ]
+            });
+        });
+
+    </script>
+
+
+    }

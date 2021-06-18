@@ -1,0 +1,95 @@
+﻿@model IEnumerable<MovigenCore.Models.ViewModel.UserViewModel>
+@{
+    ViewData["Title"] = "Lista de Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<div class="container">
+
+    <h3 class="text-info">Lista de Usuarios</h3>
+
+    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-info"><i class="fas fa-plus"></i>&nbsp; Crear Usuario</a>
+    <hr />
+
+    <div class="table-responsive">
+        <table id="tablaUsuarios" class="table table-sm table-hover dt-responsive table-borderless">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.User.Email)
+                    </th>
+                    <th>
+                        Cod. Vendedor
+                    </th>
+                    <th>
+                        
+                        Razón Social
+                    </th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>            
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(document).ready(function () {
+            $("#tablaUsuarios").DataTable({
+                pageLength: 10,
+                destroy: true,
+                dom: 'Bfrtip',
+                //filter: false,
+                buttons: [
+                     'csv', 'excel', 'pdf'
+                ],
+                ajax: {
+                    url: "/SuperAdmin/Usuarios/LoadUsers",
+                    type: "GET",
+                    datatype: "json",
+
+                },
+                "columns": [
+                    { "data": "user.email" },
+                    { "data": "user.codVendedor" },
+                    { "data": "user.empresa.razonSocial" },
+                    {
+                        "mRender": function (data, type, row)
+                        {
+                            if (row.user.lockoutEnd != null)
+                                return '<label style="color:red">Locked</label>';
+                            else
+                                return '<label style="color:green">Online</label>';
+                        }
+                    },
+                    {
+                         "mRender": function (data, type, row) {
+                            var linkEdit = '@Html.ActionLink("Editar", "Edit", new { id = -1 }, new { @class = "btn btn-sm btn-outline-primary" })';                          
+                            var linkBlock = '@Html.ActionLink("Accion", "Delete", new { id = -1 }, new { @class = "btn btn-sm btn-outline-warning" })';
+                          
+
+                            
+                            linkEdit = linkEdit.replace("-1", row.user.id);
+                            linkBlock = linkBlock.replace("-1", row.user.id);
+
+                         return linkEdit +' '+ linkBlock;
+                         }
+                    }
+
+                ]
+            });
+        });
+
+    </script>
+
+}
+
+

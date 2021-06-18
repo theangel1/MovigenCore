@@ -1,0 +1,105 @@
+﻿@model MovigenCore.Models.ViewModel.PedidosViewModel
+
+@{
+    ViewData["Title"] = "Detalle del Pedido";
+}
+<br />
+<div class="container">
+    <h3 class="text-info">Detalle del Pedido</h3>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedidos.RutCliente)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pedidos.RutCliente)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedidos.RazonSocial)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pedidos.RazonSocial)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedidos.Sucursal)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pedidos.Sucursal)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedidos.CondicionPago)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pedidos.CondicionPago)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedidos.ComentarioAdicional)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pedidos.ComentarioAdicional)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedidos.Fecha)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pedidos.Fecha)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedidos.TipoDocumento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pedidos.TipoDocumento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedidos.Enviado)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pedidos.Enviado)
+        </dd>
+
+    </dl>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Desc. %</th>
+                <th>Total</th>
+            </tr>
+
+            @foreach (var item in Model.Detalles)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(c => item.Codigo)</td>
+                    <td>@Html.DisplayFor(c => item.Descripcion)</td>
+                    <td>$@Html.DisplayFor(c => item.Precio)</td>
+                    <td>@Html.DisplayFor(c => item.Cantidad)</td>
+                    <td>@Html.DisplayFor(c => item.Descuento)</td>
+                    <td>$@Html.DisplayFor(c => item.Total)</td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <div class="card text-center">
+                <div class="card border-info mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Total</div>
+                    <div class="card-body">
+                        <p class="card-text">$@Html.DisplayFor(model => model.Pedidos.Total)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+        <a asp-action="Edit" asp-route-id="@Model.Pedidos.Id" class="btn btn-outline-primary">Editar Pedido</a>
+        <a asp-action="Index" class="btn btn-outline-warning">Volver a la lista de pedidos</a>
+    </div>
+
+

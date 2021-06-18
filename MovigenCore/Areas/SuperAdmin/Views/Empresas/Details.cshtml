@@ -1,0 +1,49 @@
+﻿@model MovigenCore.Models.Empresa
+
+@{
+    ViewData["Title"] = "Detalles";
+}
+<div class="container">
+    <br />
+    <h3 class="text-info">Detalles Empresa</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Rut)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Rut)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RazonSocial)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.RazonSocial)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.NombreFantasia)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NombreFantasia)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Direccion)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.EmailAdministrador)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EmailAdministrador)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Editar</a>
+        <a asp-action="Index" class="btn btn-outline-warning">Volver a lista de Empresas</a>
+    </div>
+</div>

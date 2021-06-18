@@ -1,0 +1,68 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Crear Usuario Movigen Core";
+    
+}
+    <div class="container">
+        <br />
+        <h3 class="text-info">@ViewData["Title"]</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">                    
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Nombre"></label>
+                        <input asp-for="Input.Nombre" class="form-control" />
+                        <span asp-validation-for="Input.Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Email"></label>
+                        <input asp-for="Input.Email" class="form-control" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Password"></label>
+                        <input asp-for="Input.Password" class="form-control" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.CodVendedor"></label>
+                        <input asp-for="Input.CodVendedor" class="form-control" />
+                        <span asp-validation-for="Input.CodVendedor" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.IsAdmin"></label>
+                        <input asp-for="Input.IsAdmin" type="checkbox" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <label asp-for="Input.EmpresaId"></label>
+                        </div>
+                        <div class="form-group">
+                            @Html.DropDownList("Input.EmpresaId", new SelectList((System.Collections.IEnumerable)
+                           ViewData["temp"], "Id", "NombreFantasia"), new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-primary">Crear</button>
+                        <a asp-action="Index" asp-controller="Usuarios" asp-area="SuperAdmin" class="btn btn-outline-warning">Volver a lista de Usuarios</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }

@@ -1,0 +1,49 @@
+﻿@model MovigenCore.Models.Cliemae
+
+@{
+    ViewData["Title"] = "Eliminar Cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h3 class="text-danger">Eliminar Cliente</h3>
+
+<h4 class="text-danger">¿Desea eliminar el siguiente Cliente?</h4>
+<div>
+    
+    <hr />
+    <dl class="dl-horizontal">
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Clrut)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clrut)
+        </dd>       
+       
+        <dt>
+            @Html.DisplayNameFor(model => model.Clnom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clnom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cldir)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cldir)
+        </dd>
+       
+        <dt>
+            @Html.DisplayNameFor(model => model.Clobs)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clobs)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-info">Volver a la Lista de Clientes</a>
+    </form>
+</div>

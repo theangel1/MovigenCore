@@ -1,0 +1,241 @@
+﻿@model MovigenCore.Models.ViewModel.PedidosViewModel
+
+@{
+    ViewData["Title"] = "Crear Pedido";
+}
+
+<br />
+<div class="container">
+    <h4 class="text-info">Crear Pedido</h4>
+
+    <hr />
+    <form asp-action="Create" class="form-group-sm">
+        <input hidden asp-for="Pedidos.EmpresaId" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group">
+                    <label asp-for="Pedidos.RutCliente" class="control-label"></label>
+                    <button type="button" data-toggle="modal" data-target="#modalClientes" class="btn btn-outline-primary btn-sm"><i class="fas fa-search"></i></button>
+                    <input asp-for="Pedidos.RutCliente" class="form-control" id="rutCliente" onblur="valRut();" />
+                    <span asp-validation-for="Pedidos.RutCliente" class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Pedidos.RazonSocial" class="control-label"></label>
+                    <input asp-for="Pedidos.RazonSocial" class="form-control" />
+                    <span asp-validation-for="Pedidos.RazonSocial" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Pedidos.Sucursal" class="control-label"></label>
+                    <input asp-for="Pedidos.Sucursal" class="form-control" />
+                    <span asp-validation-for="Pedidos.Sucursal" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Crédito</label>
+                    <input type="text" id="Credito" readonly class="form-control" />
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="form-group">
+                    <label asp-for="Pedidos.CondicionPago" class="control-label"></label>
+                    <select asp-for="Pedidos.CondicionPago" class="form-control" required>
+                        <option value="">Seleccionar</option>
+                        <option value="01">Contado</option>
+                        <option value="02">Crédito</option>
+                        <option value="03">Entrega Gratuita</option>
+                    </select>
+                    <span asp-validation-for="Pedidos.CondicionPago" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Pedidos.ComentarioAdicional" class="control-label"></label>
+                    <input asp-for="Pedidos.ComentarioAdicional" class="form-control" />
+                    <span asp-validation-for="Pedidos.ComentarioAdicional" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="form-group">
+                    <label asp-for="Pedidos.TipoDocumento" class="control-label"></label>
+                    <select asp-for=Pedidos.TipoDocumento class="form-control" required>
+                        <option value="">Seleccionar</option>
+                        <option value="B">Boleta</option>
+                        <option value="F">Factura</option>
+                    </select>
+                    <span asp-validation-for="Pedidos.TipoDocumento" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalle pedido-->
+
+        <hr />
+        <h5 class="text-primary">
+            Detalle
+            <button type="button" data-toggle="modal" data-target="#modalProductos" class="btn btn-outline-primary btn-sm"><i class="fas fa-search"></i></button>
+        </h5>
+
+
+        <div class="table-responsive">
+            <table class="table table-responsive table-borderless" id="tablaDetalle">
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Desc. %</th>
+                    <th>Total</th>
+                    <th><button type="button" id="btnEliminaLineaDet" class="btn btn-outline-danger" onclick="eliminarLineaDet(this);"><i class="fas fa-trash-alt"></i></button></th>
+                </tr>
+                <tr>
+                    <td><input asp-for="Detalles[0].Codigo" class="form-control" onblur="GetProductosAjaxPorCodigo(this.value)" style="width:80px"/> </td>
+                    <td><input asp-for="Detalles[0].Descripcion" class="form-control" required style="width:auto" /></td>
+                    <td><input asp-for="Detalles[0].Cantidad" class="form-control" onblur="validacionStock();"/></td>
+                    <td><input asp-for="Detalles[0].Precio" class="form-control" readonly style="width:80px" /></td>
+                    <td><input asp-for="Detalles[0].Stock" class="form-control" readonly style="width:70px"/></td>
+                    <td><input asp-for="Detalles[0].Descuento" class="form-control" value="0" /></td>
+                    <td><input asp-for="Detalles[0].Total" class="form-control" readonly style="width:80px"/></td>
+                    <td></td>
+
+                </tr>
+            </table>
+            <div class="text-center">
+                <button type="button" id="btnAgregaLineaDet" class="btn btn-outline-info" onclick="agregarLineaDet();"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+        <hr />
+
+        <div class="row">
+            <div class="col"></div>
+            <div class="card text-center">
+                <div class="card border-dark mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Total</div>
+                    <div class="card-body">
+                        <p class="card-text"><input asp-for="Pedidos.Total" class="form-control" readonly /></p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-outline-success btn-lg btn-block"><i class="far fa-plus-square"></i> Crear</button>
+            <a asp-action="Index" class="btn btn-outline-warning btn-block" onclick="return confirm('¿Desea Volver a la Lista de Pedidos?')">Volver a la Lista de Pedidos</a>
+        </div>
+    </form>
+    <hr />
+</div>
+
+<!-- Modal BUSQUEDA DE productos-->
+<div class="modal fade" id="modalProductos" tabindex="-1" role="dialog" aria-labelledby="modalProductos" aria-hidden="true">
+    <div class="modal-dialog modal-wide">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-info" id="modalProductos">Buscar Productos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless" id="tablaProductos">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Descuento</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Cerrar</button>
+                <input type="button" onclick="recursividadEnDetalle();" value="Seleccionar" class="btn btn-outline-info" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN Modal  productos-->
+<!-- Modal BUSQUEDA DE CLIENTES-->
+<div class="modal fade" id="modalClientes" tabindex="-1" role="dialog" aria-labelledby="modalClientes" aria-hidden="true">
+    <div class="modal-dialog modal-wide">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-info" id="modalClientes">Buscar Clientes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless" id="tablaClientes">
+                        <thead>
+                            <tr>
+                                <th nowrap="nowrap">Rut Cliente</th>
+                                <th nowrap="nowrap">Razón Social</th>
+                                <th nowrap="nowrap">Coment. Adic.</th>
+                                <th>Crédito</th>
+                                <th nowrap="nowrap">Dirección</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
+                <input type="button" onclick="SelectClients();" value="OK" class="btn btn-outline-info" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN Modal  Clientes-->
+
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        var counter = 1;
+        var sum = 0;
+
+        function SelectClients() {
+            var rut = $("#tablaClientes .selected td:first").text();
+            var nombre = $("#tablaClientes .selected td:eq(1)").text();
+            var obs = $("#tablaClientes .selected td:eq(2)").text();
+            var credito = $("#tablaClientes .selected td:eq(3)").text();
+            var direccion = $("#tablaClientes .selected td:eq(4)").text();
+
+            $('input[name="Pedidos.RutCliente"]').val(rut);
+            $('input[name="Pedidos.RazonSocial"]').val(nombre);
+            $('input[name="Pedidos.ComentarioAdicional"]').val(obs);
+            $('#Credito').val(credito);
+            $('input[name="Pedidos.Sucursal"]').val(direccion);
+
+            $('#modalClientes').modal('hide');
+
+            swal("Exito", "Cliente Cargado", "success");
+        }
+       
+
+
+    
+    </script>
+    <script src="~/js/Orders.js" asp-append-version="true"></script>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <script>
+             swal("Información", '@ViewBag.Message', "error");
+        </script>
+
+    }
+
+}
+

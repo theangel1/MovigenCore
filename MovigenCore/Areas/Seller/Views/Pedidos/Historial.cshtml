@@ -1,0 +1,85 @@
+﻿@model IEnumerable<MovigenCore.Models.Pedido>
+@{
+    ViewData["Title"] = "Historial";
+}
+<br />
+<h3 class="text-info">@ViewData["Title"]</h3>
+
+<div class="table-responsive">
+
+    <table id="tablaTick" class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.RutCliente)</th>
+                <th>@Html.DisplayNameFor(model => model.RazonSocial)</th>
+                <th>@Html.DisplayNameFor(model => model.Total)</th>
+                <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+                <th>@Html.DisplayNameFor(model => model.Enviado)</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <th nowrap="nowrap">@Html.DisplayNameFor(model => model.RutCliente)</th>
+                <th nowrap="nowrap">@Html.DisplayNameFor(model => model.RazonSocial)</th>
+                <th> @Html.DisplayNameFor(model => model.Total)</th>
+                <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+                <th>@Html.DisplayNameFor(model => model.Enviado)</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
+@section Scripts
+    {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+           var table =  $("#tablaTick").DataTable({
+                responsive: true,
+                pageLength: 10,
+                destroy: true,
+                dom: 'Bfrtip',
+                processing: true,
+                filter: false,
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
+                ajax: {
+                    url: "/Seller/Pedidos/GetHistorial",
+                    type: "GET",
+                    datatype: "json",
+                },
+                "columns": [
+                    { "data": "rutCliente" },
+                    { "data": "razonSocial" },
+                    { "data": "total" },
+                     {
+                        "data": "fecha",
+                        render: function (d) {
+                            return moment(d).format("DD-MM-YYYY");
+                        }
+                    },
+                    { "data": "enviado" },
+                    {
+                        "mRender": function (data, type, row) {
+
+                            var linkDetail = '@Html.ActionLink("Detalles", "Details", new {id= -1 },new { @class = "btn btn-sm btn-outline-success"})';
+                            linkDetail = linkDetail.replace("-1", row.id);
+
+                            var linkDel = '@Html.ActionLink("", "Delete", new {id= -1 }, new { @class = "btn btn-sm btn-outline-danger fas fa-trash" })';
+                            linkDel = linkDel.replace("-1", row.id);
+
+                            return linkDetail + ' ' + linkDel;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

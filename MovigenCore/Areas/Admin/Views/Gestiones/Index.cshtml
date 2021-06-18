@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewData["Title"] = "Administración";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<br />
+<h3 class="text-info">Panel de Administración y carga de Archivos</h3>
+<hr />
+<div class="container">
+    <div class="alert-success">
+        @ViewData["Mensaje"]
+    </div>
+
+    <div class="alert-danger">
+        @ViewData["error"]
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-form-label">Archivo XML Productos</label>
+            <input type="file" name="files" class="form-control-file" id="fileProducto" />
+        </div>
+        <input type="submit" class="btn btn-outline-info" value="Subir Productos" asp-controller="Gestiones" asp-action="LoadProdmae" onclick="return validateProducto();" />
+    </form>
+
+    <hr />
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-form-label">Archivo XML Clientes</label>
+            <input type="file" name="files" class="form-control-file" id="fileCliente" />
+        </div>
+        <input type="submit" class="btn btn-outline-info" value="Subir Clientes" asp-controller="Gestiones" asp-action="LoadCliemae" onclick="return validateCliente();" />
+    </form>
+
+    <hr />
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-form-label">Archivo XML Condición de pago</label>
+            <input type="file" name="files" class="form-control-file" id="fileCondicion" />
+        </div>
+        <input type="submit" class="btn btn-outline-info" value="Subir Condiciones de Pago" asp-controller="Gestiones" asp-action="LoadCondmae" onclick="return validateCondicion();" />
+    </form>
+    <hr />
+    <div class="text-center">
+        <a asp-action="Index" asp-area="Seller" asp-controller="Home" class="btn btn-info">Volver al Menú Principal</a>
+    </div>
+</div>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        function validateProducto() {
+            var producto = document.getElementById("fileProducto").value;
+
+            if (producto == "") {
+                swal("¡Error!", "No se cargó ningún xml de producto", "error");
+                return false;
+            }
+
+        }
+
+        function validateCondicion() {
+            var condicion = document.getElementById("fileCondicion").value;
+
+            if (condicion == "") {
+                swal("¡Error!", "No se cargó ningún xml de condición de pago", "error");
+                return false;
+            }
+
+        }
+
+        function validateCliente() {
+            var cliente = document.getElementById("fileCliente").value;
+
+
+            if (cliente == "") {
+                swal("¡Error!", "No se cargó ningún xml de cliente", "error");
+                return false;
+            }
+
+
+
+
+        }
+
+    </script>
+}

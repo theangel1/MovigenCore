@@ -1,0 +1,63 @@
+﻿@model MovigenCore.Models.Cliemae
+
+@{
+    ViewData["Title"] = "Detalle Cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br>
+<div>
+    <h3 class="text-info">Detalle Cliente</h3>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Clrut)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clrut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Clnom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clnom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cldir)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cldir)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Clcon)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clcon)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Clcre)
+        </dt>
+        <dd>
+            $@Html.DisplayFor(model => model.Clcre)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Clobs)
+        </dt>
+        <dd>
+            @if (!string.IsNullOrEmpty(Model.Clobs))
+            {
+                @Html.DisplayFor(model => model.Clobs)
+            }
+            else
+            {
+                <div>--Sin observaciones--</div>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Editar Cliente</a>
+    <a asp-action="Index" class="btn btn-info">Volver a la lista de Clientes</a>
+</div>
+

@@ -1,0 +1,13 @@
+﻿td {
+    border: 1px #DDD solid;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: #198f93;
+    color: #FFF;
+}
+.rojo {
+    color: #ec0e0e;
+}

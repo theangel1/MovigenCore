@@ -1,0 +1,56 @@
+﻿@model MovigenCore.Models.Empresa
+
+@{
+    ViewData["Title"] = "Eliminar Empresa";
+}
+    <div class="container">
+        <br />
+        <h3 class="text-danger">Eliminar Empresa</h3>
+
+        <h5 class="text-danger">¿Desea eliminar esta Empresa?</h5>
+        <div>
+
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Rut)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Rut)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RazonSocial)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RazonSocial)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.NombreFantasia)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.NombreFantasia)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Direccion)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Direccion)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.EmailAdministrador)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EmailAdministrador)
+                </dd>
+
+
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Eliminar" class="btn btn-outline-danger" />
+                <a asp-action="Index" class="btn btn-outline-warning">Volver a lista de Empresas</a>
+            </form>
+        </div>
+    </div>

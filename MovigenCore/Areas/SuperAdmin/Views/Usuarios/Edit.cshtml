@@ -1,0 +1,52 @@
+﻿@model MovigenCore.Models.ViewModel.UserViewModel
+@using MovigenCore.Extensiones
+@{
+    ViewData["Title"] = "Editar Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <br />
+    <h3 class="text-info">Editar Usuario</h3>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post" asp-action="Edit">
+                <input type="hidden" asp-for="User.Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="User.Nombre"></label>
+                    <input asp-for="User.Nombre" class="form-control" />
+                    <span asp-validation-for="User.Nombre" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.Email"></label>
+                    <input asp-for="User.Email" readonly class="form-control" type="email" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.CodVendedor"></label>
+                    <input asp-for="User.CodVendedor" class="form-control" />
+                    <span asp-validation-for="User.CodVendedor" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Rol"></label>
+                    <select asp-for="@Model.RolId" asp-items="@Model.RolList.ToSelectListItem(Model.RolId)" class="form-control"></select>
+                    <span asp-validation-for="@Model.Rol" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.Empresa"></label>
+                    <select asp-for="@Model.EmpresaId" asp-items="@Model.EmpresaList.ToSelectListItemEmpresa(Model.EmpresaId)" class="form-control"></select>
+                    <span asp-validation-for="@Model.EmpresaId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-outline-primary" asp-route-id="@Model.User.Id" value="Actualizar" />
+                    <a asp-action="Index" class="btn btn-outline-warning">Volver a lista de Usuarios</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

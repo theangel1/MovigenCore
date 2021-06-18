@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+<br />
+<link rel="stylesheet" href="~/css/AdminLTE.css" />
+<div class="text-center">
+    <h1 class="text-navy">¡Bienvenido!</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>Aplicación Web creada con ASP.NET Core.</p>
+
+    }
+    else
+    {
+        <div class="alert alert-primary" role="alert">
+            Para acceder a todas las funcionalidades del sistema, ¡Accede a tu cuenta!
+            <br />
+            <a class="btn btn-success" asp-area="Identity" asp-page="/Account/Login"><i class="fab fa-expeditedssl"></i></a>
+        </div>
+
+    }
+</div>
+<div class="row">
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3 id="dolar"></h3>
+
+                <p>Valor actual del Dolar</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <a href="https://www.bcentral.cl" class="small-box-footer" target="_blank">
+                Más Información <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3 id="uf"></h3>
+
+                <p>Valor actual de UF</p>
+            </div>
+            <div class="icon">
+                <i class="fab fa-acquisitions-incorporated"></i>
+            </div>
+            <a href="https://www.bcentral.cl" class="small-box-footer" target="_blank">
+                Más Información <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-blue">
+            <div class="inner">
+                <h3 id="euro"></h3>
+
+                <p>Valor actual del Euro</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-euro-sign"></i>
+            </div>
+            <a href="https://www.bcentral.cl" class="small-box-footer" target="_blank">
+                Más Información <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <div class="small-box bg-orange">
+            <div class="inner">
+                <h3 id="utm"></h3>
+                <p>Valor actual UTM</p>
+            </div>
+            <div class="icon">
+                <i class="fab fa-acquisitions-incorporated"></i>
+            </div>
+            <a href="https://www.bcentral.cl" class="small-box-footer" target="_blank">
+                Más Información <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            var dolar = document.getElementById("dolar");
+            var uf = document.getElementById("uf");
+            var euro = document.getElementById("euro");
+            var utm = document.getElementById("utm");
+
+            $.getJSON('https://mindicador.cl/api', function (data) {
+                var dailyIndicators = data;
+                dolar.innerText = "$" + dailyIndicators.dolar.valor;
+                uf.innerText = "$" + dailyIndicators.uf.valor;
+                euro.innerText = "$" + dailyIndicators.euro.valor;
+                utm.innerText = "$" + dailyIndicators.utm.valor;
+
+            }).fail(function () {
+                console.log('Error al consumir la API!');
+            });
+
+        });
+    </script>
+
+}

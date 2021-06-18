@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "MetodoCustom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<div class="container">
+    <h3 class="text-info">Resultado de su envio</h3>
+
+    <table class="table">
+        <tr>
+            <td>
+                <h5 class="text-warning">Mensaje del Sistema: </h5>
+                <h5>@ViewBag.Message</h5>
+            </td>
+        </tr>
+    </table>
+    <a asp-action="Index" class="btn btn-outline-info">Volver a Lista de Pedidos</a>
+</div>
+
+@section Scripts{
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <script type="text/javascript">
+            swal("¡Información!", '@ViewBag.Message', "info");
+        </script>
+    }
+
+}
+
